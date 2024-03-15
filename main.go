@@ -55,13 +55,13 @@ func (a *AuthHandler) AuthUser(w http.ResponseWriter, r *http.Request) {
 			userInfo.Pubkey: userInfo.Relays[:],
 		}
 	}
-	respBytes, err := json.MarshalIndent(resp, "", "    ")
+	respBytes, err := json.Marshal(resp)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(fmt.Sprintf("failed to JSON marshal response: %v", err)))
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(respBytes)
 }
 
